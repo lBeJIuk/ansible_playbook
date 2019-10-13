@@ -1,4 +1,4 @@
-Port 10022
+Port 22
 PermitRootLogin no
 PasswordAuthentication no
 PermitEmptyPasswords no
