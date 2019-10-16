@@ -98,4 +98,21 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias dpsa="docker ps -a --format=\"table {{.Status}}\t{{.Names}}\t{{.Ports}}\""
+
+PROMPT=%F{red}%B%M%b%f$PROMPT
+
+autoload -U compinit
+compinit
+
+zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
+zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+
+setopt correctall
+
+export HISTSIZE=5000
+export HISTFILE="$HOME/.history"
+export SAVEHIST=$HISTSIZE
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+
 {% endraw %}

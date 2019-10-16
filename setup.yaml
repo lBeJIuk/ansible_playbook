@@ -131,6 +131,7 @@
     become: yes
     copy: src=files/.vimrc dest=~/.vimrc
   - name: create directory .ssh
+    become: yes
     file:
       path: /home/lbejiuk/.ssh
       state: directory
