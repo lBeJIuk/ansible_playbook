@@ -63,6 +63,7 @@
       - zsh
       - libpam-google-authenticator
       - curl
+      - htop
 
   - name: Ensure docker-compose is installed and available
     become: yes
