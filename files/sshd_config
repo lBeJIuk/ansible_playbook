@@ -17,5 +17,5 @@ AcceptEnv LANG LC_*
 
 Subsystem	sftp	/usr/lib/openssh/sftp-server
 
-AllowUsers lbejiuk, github
+AllowUsers lbejiuk
 

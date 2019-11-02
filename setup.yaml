@@ -77,15 +77,6 @@
     user:
       name: lbejiuk
 
-  - name: Add the user 'github'
-    become: yes
-    user:
-      name: github
-      group: docker
-      generate_ssh_key: yes
-      ssh_key_bits: 4096
-      ssh_key_file: .ssh/id_rsa
-
   - name: change root's shel
     become: yes
     user:
