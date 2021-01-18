@@ -1,3 +1,6 @@
+# to start
+ansible-playbook setup.yaml --extra-vars='variable_host=instance_name_from_etc_ansible_hosts' --private-key=~/.ssh/pravate_key.pem -vvvv
+
 # ansible_playbook
 
 After instalation

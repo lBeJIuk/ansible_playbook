@@ -40,11 +40,6 @@
       repo: deb https://download.docker.com/linux/ubuntu bionic stable
       state: present
 
-  - name: Add certbot Repository
-    become: yes
-    apt_repository:
-      repo: ppa:certbot/certbot
-
   - name: Install a list of packages
     become: yes
     apt:
@@ -54,7 +49,6 @@
     vars:
       packages:
       - certbot
-      - python-certbot-apache
       - docker-ce
       - vim
       - git
@@ -64,7 +58,7 @@
       - libpam-google-authenticator
       - curl
       - htop
-
+      - tmux
   - name: Ensure docker-compose is installed and available
     become: yes
     get_url:
@@ -122,6 +116,9 @@
       backup: yes
       mode: 'u=rw,go=r'
 
+  - name: Copy tmux_config from master to slave
+    become: yes
+    copy: src=files/.tmux.conf dest=~/.tmux.conf
   - name: Copy sshd_config from master to slave
     become: yes
     copy: src=files/sshd_config dest=/etc/ssh/sshd_config
