@@ -1,0 +1,45 @@
+---
+- name: Install vim
+  package:
+    name: vim
+    state: present
+  tags: [ "vim" ]
+
+- name: create ~/.vim diretory
+  file:
+    path: "/root/.vim/autoload"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: 0755
+  tags: [ "vim" ]
+
+- name: create ~/.vim/colors diretory
+  file:
+    path: "/root/.vim/colors"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: 0755
+  tags: [ "vim" ]
+
+- name: Clone vim-plug from github
+  get_url:
+    url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    dest: "/root/.vim/autoload/plug.vim"
+  tags: [ "vim" ]
+
+- name: Clone colors from github
+  get_url:
+    url: https://raw.githubusercontent.com/kristijanhusak/vim-hybrid-material/master/colors/hybrid_material.vim
+    dest: "/root/.vim/colors/hybrid_material.vim"
+  tags: [ "vim" ]
+
+
+- name: Copy config
+  copy:
+    src: files/.vimrc
+    dest: "/root/.vimrc"
+    owner: "root"
+    group: "root"
+  tags: [ 'vim' ]

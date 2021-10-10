@@ -1,0 +1,14 @@
+---
+- name: install knockd
+  package:
+    name: knockd
+    state: present
+  tags: ['knock']
+
+- name: Copy config
+  template:
+    src: knockd.conf.j2
+    dest: "/etc/knockd.conf"
+    backup: yes
+    mode: 'u=rw,go=r'
+  tags: [ 'knock' ]

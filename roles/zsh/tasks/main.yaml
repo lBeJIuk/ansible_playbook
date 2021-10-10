@@ -1,0 +1,40 @@
+---
+- name: install zsh
+  package:
+    name: zsh
+    state: present
+  tags: ['zsh']
+
+- name: change root's shel
+  user:
+    name: root
+    shell: /bin/zsh
+  tags: [ 'zsh' ]
+
+- name: use oh-my-zsh
+  git:
+    repo: "https://github.com/robbyrussell/oh-my-zsh.git"
+    dest: "/root/.oh-my-zsh"
+    version: master
+  tags: [ 'zsh' ]
+
+- name: clone theme
+  git:
+    repo: "https://github.com/bhilburn/powerlevel9k.git"
+    dest: "/root/.oh-my-zsh/custom/themes/powerlevel9k"
+    version: master
+  tags: [ 'zsh' ]
+
+- name: Copy config
+  copy:
+    src: files/.zshrc
+    dest: "/root/.zshrc"
+    owner: "root"
+    group: "root"
+  tags: [ 'zsh' ]
+
+- name: Ensure repo is up-to-date
+  git:
+    repo: https://github.com/zsh-users/zsh-completions
+    dest: "/home/{{ username }}/.oh-my-zsh/custom/plugins/zsh-completions"
+  tags: [ 'zsh' ]

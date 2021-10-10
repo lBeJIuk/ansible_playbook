@@ -1,0 +1,11 @@
+[options]
+  Interface = ens18
+  UseSyslog
+
+[opencloseSSH]
+    sequence = {{ knockphrase }}
+    seq_timeout = 15
+    start_command = /sbin/iptables -I INPUT -s %IP% -p tcp --dport {{ sshport }} -j ACCEPT
+    cmd_timeout = 30
+    stop_command = /sbin/iptables -D INPUT -s %IP% -p tcp --dport {{ sshport }} -j ACCEPT
+    tcpflags = syn

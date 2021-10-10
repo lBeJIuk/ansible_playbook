@@ -1,0 +1,14 @@
+---
+- name: install google 2fa
+  package:
+    name: tmux
+    state: present
+  tags: ['tmux']
+
+- name: Copy config
+  copy:
+    src: files/.tmux.conf
+    dest: /root/.tmux.conf
+    owner: root
+    group: root
+  tags: [ 'tmux' ]

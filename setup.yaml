@@ -1,157 +1,26 @@
+---
 - hosts: "{{ variable_host }}"
-# "You have to add the --extra-vars='variable_host='"
+  become: true
+  become_method: sudo
+  vars_prompt:
+
+    - name: username
+      prompt: What is your username?
+      private: no
+
+    - name: sshport
+      prompt: What is your ssh port (if neaded)?
+      private: no
+
+    - name: knockphrase
+      prompt: What is your knock phrase (if neaded)?
+      private: no
+
+
+
   tasks:
-  - name: Install aptitude using apt
-    become: yes
-    apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
-
-  - name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
-    become: yes
-    apt:
-      update_cache: yes
-      cache_valid_time: 3600
-      upgrade: dist
-
-  - name: Install a list of packages
-    become: yes
-    apt:
-      name: "{{ packages }}"
-      state: 'latest'
-      update_cache: 'yes'
-    vars:
-      packages:
-      - gnupg
-      - software-properties-common
-      - locales
-      - language-pack-de
-      - dbus
-      - apt-transport-https
-      - ca-certificates
-
-  - name: Add Docker GPG apt Key
-    become: yes
-    apt_key:
-      url: https://download.docker.com/linux/ubuntu/gpg
-      state: present
-
-  - name: Add Docker Repository
-    become: yes
-    apt_repository:
-      repo: deb https://download.docker.com/linux/ubuntu bionic stable
-      state: present
-
-  - name: Install a list of packages
-    become: yes
-    apt:
-      name: "{{ packages }}"
-      state: 'latest'
-      update_cache: 'yes'
-    vars:
-      packages:
-      - certbot
-      - docker-ce
-      - vim
-      - git
-      - nginx
-      - mc
-      - zsh
-      - libpam-google-authenticator
-      - curl
-      - htop
-      - tmux
-  - name: Ensure docker-compose is installed and available
-    become: yes
-    get_url:
-      url : https://github.com/docker/compose/releases/download/1.25.0-rc2/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
-      dest: /usr/local/bin/docker-compose
-      mode: 'u+x,g+x'
-
-  - name: Add the user 'lbejiuk'
-    become: yes
-    user:
-      name: lbejiuk
-
-  - name: change root's shel
-    become: yes
-    user:
-      name: root
-      shell: /bin/zsh
-
-  - name: clone oh-my-zsh
-    become: yes
-    # core.autocrlf=input prevents https://github.com/robbyrussell/oh-my-zsh/issues/4402
-    command: 'git clone -c core.autocrlf=input --depth=1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh'
-
-  - name: Create autoload folder
-    become: yes
-    file:
-      path: ~/.vim/autoload
-      state: directory
-      mode: '0755'
-
-  - name: Create colors folder
-    become: yes
-    file:
-      path: ~/.vim/colors
-      state: directory
-      mode: '0755'
-
-  - name: clone Plug for vim
-    become: yes
-    get_url:
-      url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-      dest: ~/.vim/autoload/plug.vim
-
-  - name: clone Theme for vim
-    become: yes
-    get_url:
-      url: https://raw.githubusercontent.com/kristijanhusak/vim-hybrid-material/master/colors/hybrid_reverse.vim
-      dest: ~/.vim/colors/hybrid_reverse.vim
-
-  - name: write .zshrc for root
-    become: yes
-    template:
-      src: zshrc.j2
-      dest: '~/.zshrc'
-      backup: yes
-      mode: 'u=rw,go=r'
-
-  - name: Copy tmux_config from master to slave
-    become: yes
-    copy: src=files/.tmux.conf dest=~/.tmux.conf
-  - name: Copy sshd_config from master to slave
-    become: yes
-    copy: src=files/sshd_config dest=/etc/ssh/sshd_config
-  - name: Copy sshd from master to slave
-    become: yes
-    copy: src=files/sshd dest=/etc/pam.d/sshd
-  - name: Copy sshd from master to slave
-    become: yes
-    copy: src=files/.vimrc dest=~/.vimrc
-  - name: create directory .ssh
-    become: yes
-    file:
-      path: /home/lbejiuk/.ssh
-      state: directory
-      owner: lbejiuk
-      group: lbejiuk
-  - name: Copy authorized_keys
-    become: yes
-    copy:
-      src: files/authorized_keys
-      dest: /home/lbejiuk/.ssh/authorized_keys
-      owner: lbejiuk
-      group: lbejiuk
-
-  - name: Set timezone to Europe/Berlin
-    become: yes
-    timezone:
-      name: Europe/Berlin
-
-  - name: Ensure the locale exists
-    become: yes
-    locale_gen:
-      name: de_DE.UTF-8
-  - name: set as default locale
-    become: yes
-    command: localectl set-locale LANG=de_DE.UTF-8
+  - debug:
+      msg:
+      - "ansible_distribution {{ hostvars[inventory_hostname].ansible_distribution }}"
+      - "major version {{ hostvars[inventory_hostname].ansible_distribution_major_version }}"
+      - "version {{ hostvars[inventory_hostname].ansible_distribution_version }}"

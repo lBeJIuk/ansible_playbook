@@ -1,0 +1,49 @@
+---
+- name: Add the user 'lbejiuk'
+  user:
+    name: "{{ username }}"
+  tags: [ 'general' ]
+
+- name: Set timezone to Europe/Berlin
+  timezone:
+    name: Europe/Berlin
+  tags: [ 'general' ]
+
+- name: Ensure the locale exists
+  locale_gen:
+    name: de_DE.UTF-8
+  tags: [ 'general' ]
+
+- name: set as default locale
+  command: localectl set-locale LANG=de_DE.UTF-8
+  tags: [ 'general' ]
+
+- name: Install aptitude using apt
+  apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+  tags: [ 'general' ]
+
+- name: Only run "update_cache=yes" if the last one is more than 3600 seconds ago
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    upgrade: dist
+  tags: [ 'general' ]
+
+- name: Install a list of packages
+  tags: [ 'general' ]
+  apt:
+    name: "{{ packages }}"
+    state: "latest"
+    update_cache: "yes"
+  vars:
+    packages:
+      - gnupg
+      - software-properties-common
+      - locales
+      - dbus
+      - apt-transport-https
+      - ca-certificates
+      - git
+      - mc
+      - curl
+      - htop

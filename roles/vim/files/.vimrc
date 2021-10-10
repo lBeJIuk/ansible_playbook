@@ -40,7 +40,7 @@ call plug#end()
 
 
 set background=dark
-colorscheme hybrid_reverse
+colorscheme hybrid_material
 syntax enable
 filetype plugin indent on    " required
 set number
@@ -87,3 +87,18 @@ command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 "Change tab
 
 nmap <F2> :NERDTreeToggle<CR>
+
+" add yaml stuffs
+"au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+" Return to the same line you left off at
+  augroup line_return
+    au!
+    au BufReadPost *
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \ execute 'normal! g`"zvzz' |
+      \ endif
+  augroup END
+
+set paste

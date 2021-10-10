@@ -6,8 +6,10 @@ ansible-playbook setup.yaml --extra-vars='variable_host=instance_name_from_etc_a
 After instalation
 1) passwd
 2) su lbejiuk
-3) google-authenticator
-4) Uncomment 
-  /etc/ssh/sshd/sshd_conf
-5) systemctl restart ssh.service
-6) vim => :PlugInstall
+3) google-authenticator # for 2fa
+4) Uncomment
+  /etc/ssh/sshd/sshd_conf # for 2fa
+5) systemctl start knockd.service
+6) systemctl start my_firewall.service
+7) systemctl restart ssh.service
+8) vim => :PlugInstall
